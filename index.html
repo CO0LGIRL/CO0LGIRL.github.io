@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="q"></canvas>
+    <script>
+        const name = "niggers are not people";
+        const canvas = document.getElementById('q');
+        const screen = window.screen;
+        const width = canvas.width = screen.width;
+        const height = canvas.height = screen.height;
+        const context = canvas.getContext('2d');
+        const columns = Array(256).join(1).split('');
+        const fontSize = 10;
+        const nameFontSize = 48;
+        const MathRandom = Math.random;
+        const MathFloor = Math.floor;
+
+        function matrixEffect() {
+            context.fillStyle = 'rgba(0,0,0,0.05)';
+            context.fillRect(0, 0, width, height);
+            context.fillStyle = 'rgba(0,255,0,1)';
+            context.font = `${fontSize}px Arial`;
+            columns.forEach((value, index) => {
+                const randomChar = String.fromCharCode(MathFloor(666 + MathRandom() * 33));
+                context.fillText(randomChar, index * fontSize, value);
+                columns[index] = value > 768 + MathRandom() * 1e4 ? 0 : value + fontSize;
+            });
+        }
+
+        function drawName() {
+            context.fillStyle = 'rgba(0,0,0,0.05)';
+            context.fillRect(0, 0, width, height);
+            context.fillStyle = 'rgba(0,255,0,1)';
+            context.font = `${nameFontSize}px Arial`;
+            const textWidth = context.measureText(name).width;
+            context.fillText(name, (width - textWidth) / 2, height / 2);
+        }
+
+        function animate() {
+            drawName();
+            matrixEffect();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+
+</html>
