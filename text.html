@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио Егор Лукавенко</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts для стильного текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Подключение иконок Devicon для отображения языков -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <style>
+        /* Анимации */
+        a {
+            transition: color 0.3s, background 0.3s;
+        }
+
+        a:hover {
+            color: #f4b400;
+            background: #333;
+            text-shadow: 0 0 10px #f4b400, 0 0 20px #f4b400, 0 0 30px #f4b400;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* Дополнительные стили для футера */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: #f4b400;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-shadow: none;
+            background: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav>
+        <div class="container">
+            <h1 class="logo">Егор Лукавенко</h1>
+            <ul class="nav-links">
+                <li><a href="#about">Обо мне</a></li>
+                <li><a href="#skills">Навыки</a></li>
+                <li><a href="#casino">Casino</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Главный раздел -->
+    <header id="home">
+        <div class="container">
+            <h2>Привет! Меня зовут Егор</h2>
+            <p>Студент первого курса ПМИ ВШЭ Спб, разработчик на C++ и Python.</p>
+            <a href="#contact" class="btn">Связаться со мной</a>
+        </div>
+    </header>
+    <!-- Раздел "Обо мне" -->
+    <section id="about">
+        <div class="container">
+            <h2>Обо мне</h2>
+            <p>Меня зовут Егор, я студент первого курса факультета ПМИ Высшей школы экономики в Санкт-Петербурге. Увлекаюсь программированием на C++ и Python, а также интересуюсь различными аспектами разработки программного обеспечения.</p>
+        </div>
+    </section>
+    <!-- Раздел "Навыки" -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2>Навыки</h2>
+            <div class="skill-icons">
+                <div class="skill">
+                    <i class="devicon-cplusplus-plain colored"></i>
+                    <p>C++</p>
+                </div>
+                <div class="skill">
+                    <i class="devicon-python-plain colored"></i>
+                    <p>Python</p>
+                </div>
+                <div class="skill">
+                    <i class="devicon-matlab-plain colored"></i>
+                    <p>MatLab</p>
+                </div>
+                <div class="skill">
+                    <i class="devicon-mysql-plain colored"></i>
+                    <p>SQL</p>
+                </div>
+                <!-- Добавьте другие языки и технологии по мере необходимости -->
+            </div>
+        </div>
+    </section>
+    <!-- Раздел "Проекты" -->
+    <section id="casino">
+        <div class="container">
+            <h2>🍌🍌🍌 Casino 🍌🍌🍌</h2>
+            <div class="slot-machine">
+                <div class="reels">
+                    <div class="reel" id="reel1">🍒</div>
+                    <div class="reel" id="reel2">🍋</div>
+                    <div class="reel" id="reel3">🔔</div>
+                </div>
+                <button id="spinButton" class="btn">Крутить</button>
+                <p id="result"></p>
+            </div>
+        </div>
+    </section>
+    <!-- Раздел "Контакты" -->
+    <section id="contact">
+        <div class="container">
+            <h2>Контакты</h2>
+            <p>Свяжитесь со мной по электронной почте: <a href="mailto:egorluakvenko92@gmail.com">egorluakvenko92@gmail.com</a></p>
+            <p>Или нажмите на ссылку, чтобы связаться со мной в <a href="tg://resolve?domain=st_luka">Telegram</a></p>
+            <!-- Добавьте ссылки на социальные сети, если необходимо -->
+        </div>
+    </section>
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Егор Лукавенко. Все права защищены.</p>
+            <p>Связаться: <a href="mailto:egorluakvenko92@gmail.com">egorluakvenko92@gmail.com</a> | <a href="tg://resolve?domain=st_luka">Telegram</a></p>
+        </div>
+    </footer>
+    <!-- Подключение иконок Devicon для отображения языков -->
+    <script src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.js"></script>
+    <script src="casino.js"></script>
+</body>
+</html>
+
+
