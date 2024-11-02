@@ -21,8 +21,14 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const bigint &num);
 
-    friend bool operator==(const bigint &, const bigint &);
-    friend bool operator!=(const bigint &, const bigint &);
+    friend bool operator==(const bigint &lhs, const bigint &rhs) {
+        return lhs.number == rhs.number;
+    }
+    
+    friend bool operator!=(const bigint &lhs, const bigint &rhs) {
+        return !(lhs == rhs);
+    }
+
     friend bool operator>(const bigint &, const bigint &);
     friend bool operator>=(const bigint &, const bigint &);
     friend bool operator<(const bigint &, const bigint &);
@@ -41,9 +47,42 @@ public:
     }
 
     friend bigint operator+(const bigint &, const bigint &);
-    friend bigint operator+=(bigint &, const bigint &);
+    bigint& operator+=(const bigint &other) {
+        int carry = 0;
+        for (size_t i = 0; i < std::max(size(*this), size(other)); ++i) {
+            if (i >= this->number.size()) {
+                this->number.push_back(0);
+            }
+            this->number[i] += carry + (i < size(other) ? other.number[i] : 0);
+            carry = this->number[i] / BASE;
+            this->number[i] %= BASE;
+        }
+        if (carry != 0) {
+            this->number.push_back(carry);
+        }
+        return *this;
+    }
+
     friend bigint operator-(const bigint &, const bigint &);
-    friend bigint operator-=(bigint &, const bigint &);
+    bigint& operator-=(const bigint &other) {
+        int carry = 0;
+        for (size_t i = 0; i < size(*this); ++i) {
+            this->number[i] += carry;
+            if (i < size(other)) {
+                this->number[i] -= other.number[i];
+            }
+            if (this->number[i] < 0) {
+                this->number[i] += BASE;
+                carry = -1;
+            } else {
+                carry = 0;
+            }
+        }
+        while (this->number.back() == 0 && this->number.size() > 1) {
+            this->number.pop_back();
+        }
+        return *this;
+    }
     bigint operator++(int);
     bigint operator--(int);
     bigint &operator++();
@@ -91,14 +130,6 @@ bigint::bigint(unsigned int digit) {
 
 size_t size(const bigint &a) {
     return a.number.size();
-}
-
-bool operator==(const bigint &lhs, const bigint &rhs) {
-    return lhs.number == rhs.number;
-}
-
-bool operator!=(const bigint &lhs, const bigint &rhs) {
-    return !(lhs == rhs);
 }
 
 bool operator<(const bigint &lhs, const bigint &rhs) {
@@ -166,10 +197,7 @@ std::string bigint::to_string() const {
     return result;
 }
 
-bigint operator+=(bigint &lhs, const bigint &rhs) {
-    lhs = lhs + rhs;
-    return lhs;
-}
+
 
 [[nodiscard]] bigint operator-(const bigint &lhs, const bigint &rhs) {
     bigint result;
@@ -195,10 +223,6 @@ bigint operator+=(bigint &lhs, const bigint &rhs) {
     return result;
 }
 
-bigint operator-=(bigint &lhs, const bigint &rhs) {
-    lhs = lhs - rhs;
-    return lhs;
-}
 
 bigint bigint::operator++(int) {
     bigint result = *this;
