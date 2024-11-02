@@ -14,7 +14,7 @@ public:
     bigint() : number({0}) {
     }
 
-    [[explicit]] bigint(const std::string &digit) {
+    bigint(const std::string &digit){
         size_t start = 0;
         while (start < digit.length() && digit[start] == '0') {
             ++start;
@@ -35,7 +35,7 @@ public:
         }
     }
 
-    [[explicit]] bigint(unsigned int digit) {
+    bigint(unsigned int digit){
         if (digit == 0) {
             number.push_back(0);
         } else {
