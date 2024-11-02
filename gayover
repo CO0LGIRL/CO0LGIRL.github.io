@@ -14,8 +14,7 @@ public:
     bigint() : number({0}) {
     }
 
-    // cppcheck-suppress noExplicitConstructor
-    bigint(const std::string &digit) {
+    [[explicit]] bigint(const std::string &digit) {
         size_t start = 0;
         while (start < digit.length() && digit[start] == '0') {
             ++start;
@@ -36,8 +35,7 @@ public:
         }
     }
 
-    // cppcheck-suppress noExplicitConstructor
-    bigint(unsigned int digit) {
+    [[explicit]] bigint(unsigned int digit) {
         if (digit == 0) {
             number.push_back(0);
         } else {
@@ -141,11 +139,11 @@ public:
     }
 
 private:
-    static const int base_length;
+    static const size_t base_length;
     std::vector<int> number;
 };
 
-const int bigint::base_length = []() { return log10(BASE); }();
+const size_t bigint::base_length = []() { return log10(BASE); }();
 
 bool operator==(const bigint &lhs, const bigint &rhs) {
     return lhs.number == rhs.number;
