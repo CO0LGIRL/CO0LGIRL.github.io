@@ -1,9 +1,9 @@
 #include <algorithm>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cmath>
 
 // const int BASE = 10;
 
@@ -11,10 +11,11 @@ namespace lab_bigint {
 
 class bigint {
 public:
-    bigint() : number({0}) {}
+    bigint() : number({0}) {
+    }
 
     // cppcheck-suppress noExplicitConstructor
-    bigint(const std::string &digit) : number(){
+    bigint(const std::string &digit) {
         size_t start = 0;
         while (start < digit.length() && digit[start] == '0') {
             ++start;
@@ -22,19 +23,21 @@ public:
         if (start == digit.length()) {
             number.push_back(0);
         } else {
-        size_t pos = digit.length();
+            size_t pos = digit.length();
             while (pos > start) {
                 size_t chunk_start =
-                (pos >= base_length) ? pos - base_length : start;
-                std::string chunk = digit.substr(chunk_start, pos - chunk_start);
+                    (pos >= base_length) ? pos - base_length : start;
+                std::string chunk =
+                    digit.substr(chunk_start, pos - chunk_start);
                 int chunk_value = std::stoi(chunk);
                 number.push_back(chunk_value);
                 pos = chunk_start;
             }
         }
     }
+
     // cppcheck-suppress noExplicitConstructor
-    bigint(unsigned int digit) : number() {
+    bigint(unsigned int digit) {
         if (digit == 0) {
             number.push_back(0);
         } else {
@@ -54,7 +57,6 @@ public:
     friend bool operator<(const bigint &, const bigint &);
     friend bool operator<=(const bigint &, const bigint &);
     [[nodiscard]] std::string to_string() const;
-    friend size_t size(const bigint &);
 
     explicit operator unsigned int() const {
         int result = 0;
@@ -72,13 +74,15 @@ public:
         return result;
     }
 
-    bigint& operator+=(const bigint &other) {
+    bigint &operator+=(const bigint &other) {
         int carry = 0;
-        for (size_t i = 0; i < std::max(size(*this), size(other)); ++i) {
+        for (size_t i = 0;
+             i < std::max(this->number.size(), other.number.size()); ++i) {
             if (i >= this->number.size()) {
                 this->number.push_back(0);
             }
-            this->number[i] += carry + (i < size(other) ? other.number[i] : 0);
+            this->number[i] +=
+                carry + (i < other.number.size() ? other.number[i] : 0);
             carry = this->number[i] / BASE;
             this->number[i] %= BASE;
         }
@@ -88,17 +92,17 @@ public:
         return *this;
     }
 
-    friend bigint operator-(const bigint lhs, const bigint &rhs) {
+    friend bigint operator-(const bigint &lhs, const bigint &rhs) {
         bigint result = lhs;
         result -= rhs;
         return result;
     }
-    
-    bigint& operator-=(const bigint &other) {
+
+    bigint &operator-=(const bigint &other) {
         int carry = 0;
-        for (size_t i = 0; i < size(*this); ++i) {
+        for (size_t i = 0; i < this->number.size(); ++i) {
             this->number[i] += carry;
-            if (i < size(other)) {
+            if (i < other.number.size()) {
                 this->number[i] -= other.number[i];
             }
             if (this->number[i] < 0) {
@@ -113,37 +117,47 @@ public:
         }
         return *this;
     }
-    bigint operator++(int);
-    bigint operator--(int);
-    bigint &operator++();
-    bigint &operator--();
+
+    bigint operator++(int) {
+        bigint result = *this;
+        ++(*this);
+        return result;
+    }
+
+    bigint operator--(int) {
+        bigint result = *this;
+        --(*this);
+        return result;
+    }
+
+    bigint &operator++() {
+        *this += 1;
+        return *this;
+    }
+
+    bigint &operator--() {
+        *this -= 1;
+        return *this;
+    }
 
 private:
     static const int base_length;
     std::vector<int> number;
 };
 
-const int bigint::base_length = []() {
-    return log10(BASE);
-}();
-
-
-
-size_t size(const bigint &a) {
-    return a.number.size();
-}
-
+const int bigint::base_length = []() { return log10(BASE); }();
 
 bool operator==(const bigint &lhs, const bigint &rhs) {
     return lhs.number == rhs.number;
 }
-    
+
 bool operator!=(const bigint &lhs, const bigint &rhs) {
     return !(lhs == rhs);
 }
+
 bool operator<(const bigint &lhs, const bigint &rhs) {
-    unsigned int n = size(lhs);
-    unsigned int m = size(rhs);
+    unsigned int n = lhs.number.size();
+    unsigned int m = rhs.number.size();
     if (n != m) {
         return n < m;
     }
@@ -176,34 +190,13 @@ std::string bigint::to_string() const {
     result = std::to_string(number.back());
     for (size_t i = number.size() - 1; i-- > 0;) {
         if (std::to_string(number[i]).length() < base_length) {
-            result += std::string(base_length - std::to_string(number[i]).length(), '0');
+            result += std::string(
+                base_length - std::to_string(number[i]).length(), '0'
+            );
         }
         result += std::to_string(number[i]);
     }
     return result;
-}
-
-
-bigint bigint::operator++(int) {
-    bigint result = *this;
-    ++(*this);
-    return result;
-}
-
-bigint bigint::operator--(int) {
-    bigint result = *this;
-    --(*this);
-    return result;
-}
-
-bigint &bigint::operator++() {
-    *this += 1;
-    return *this;
-}
-
-bigint &bigint::operator--() {
-    *this -= 1;
-    return *this;
 }
 
 std::ostream &operator<<(std::ostream &os, const bigint &num) {
@@ -211,19 +204,15 @@ std::ostream &operator<<(std::ostream &os, const bigint &num) {
         os << '0';
         return os;
     }
-    auto rit = num.number.rbegin();
-    os << *rit;
-    ++rit;
-    for (; rit != num.number.rend(); ++rit) {
-        os << std::setw(bigint::base_length) << std::setfill('0') << *rit;
-    }
+    std::string out_bigint = num.to_string();
+    os << out_bigint;
     return os;
 }
 
 std::istream &operator>>(std::istream &is, bigint &num) {
-    std::string str;
-    is >> str;
-    num = bigint(str);
+    std::string new_bigint;
+    is >> new_bigint;
+    num = bigint(new_bigint);
     return is;
 }
 
